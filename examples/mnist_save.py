@@ -26,8 +26,8 @@ if __name__ == '__main__':
     print('Elased time:', end-start)
 
     print('.....')
-    clf.load_searcher().load_best_model().produce_keras_model().save('my_model.h5')
-
+    #clf.load_searcher().load_best_model().produce_keras_model().save('my_model.h5')
+    clf.export_autokeras_model('mnist.model')
 
     print('......')
     from keras.utils import plot_model
