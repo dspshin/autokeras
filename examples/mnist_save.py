@@ -1,7 +1,13 @@
 from keras.datasets import mnist
 from autokeras import ImageClassifier
 from autokeras.constant import Constant
+from autokeras.utils import pickle_from_file
+from keras.utils import plot_model
+
 import time
+
+model_file_name = 'mnist.model'
+
 
 if __name__ == '__main__':
     (x_train, y_train), (x_test, y_test) = mnist.load_data()
@@ -18,17 +24,14 @@ if __name__ == '__main__':
     print('...')
     clf.final_fit(x_train, y_train, x_test, y_test, retrain=True)
 
-    print('....')
-    y = clf.evaluate(x_test, y_test)
-
-    print(y * 100)
     end = time.time()
-    print('Elased time:', end-start)
+    print('Elapsed time:', end-start)
 
-    print('.....')
-    #clf.load_searcher().load_best_model().produce_keras_model().save('my_model.h5')
-    clf.export_autokeras_model('mnist.model')
+    print('....')
+    clf.export_autokeras_model(model_file_name)
 
-    print('......')
-    from keras.utils import plot_model
-    plot_model(clf, to_file='my_model.png')
+    model = pickle_from_file(model_file_name)
+    results = model.evaluate(x_test, y_test)
+    print(results)
+
+    plot_model(clf, to_file='mnist.png')
